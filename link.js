@@ -8,7 +8,7 @@ class Link {
         //this.animation = new Animator(this.spritesheet, 0,0,16,16,2,1,14,false,true);
         this.tunic = "green"; //green, blue, red, invincible
         this.facing = "right"; //up, down, left, right
-        this.state = "idle"; //idle, walking, attacking, lifting, dying
+        this.state = "walking"; //idle, walking, attacking, lifting, dying
 
         this.loadAnimations();
     };
@@ -57,46 +57,39 @@ class Link {
 
     update() {
         const LINK_SPEED = 4;
-        if (!this.game.right && !this.game.left && !this.game.up && !this.game.down){
-            this.state = "idle";
-        }
-        if (this.game.click){
-            this.state = "attacking";
-        }
-        else if (this.game.right) {
-            this.state = "walking";
-            this.facing = "right";
-            this.x+=LINK_SPEED;
-        }
-        else if (this.game.left) {
-            this.state = "walking";
-            this.facing = "left";
-            this.x-=LINK_SPEED;
-        }
-        else if(this.game.up){
-            this.state = "walking";
-            this.facing = "up";
-            this.y-=LINK_SPEED;
-        }
-        else if (this.game.down){
-            this.state = "walking";
-            this.facing = "down";
-            this.y+=LINK_SPEED;
-        }
+        if (this.x < 121*PARAMS.SCALE) this.x+=LINK_SPEED;
 
 
     }
 
     draw(ctx) {
         this.animations[this.tunic][this.facing][this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y, PARAMS.SCALE);
+
     }
 
 }
-class Sword{
+class Triforce{
+    constructor(game, x, y){
+        Object.assign(this, {game, x, y});
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/link.png");
+        this.drawAtX = 124*PARAMS.SCALE;
+        this.drawAtY = 124*PARAMS.SCALE;
+    };
+    //333, 288
+    //343, 298
     update(){
+        if (this.game.link.x == 120*PARAMS.SCALE) {
+            console.log("test");
+            this.drawAtY -= 16*PARAMS.SCALE;
+        }
 
     }
     draw(ctx){
-
+        ctx.drawImage(this.spritesheet,
+            this.x, this.y,
+            10, 10,
+            this.drawAtX, this.drawAtY,
+            10 * PARAMS.SCALE,
+            10 * PARAMS.SCALE);
     }
 }

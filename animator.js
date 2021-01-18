@@ -13,20 +13,27 @@ class Animator {
         if (this.isDone()) {
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
-            } else {
-                return;
-            }
+            } else return;
         }
 
         let frame = this.currentFrame();
         if (this.reverse) frame = this.frameCount - frame - 1;
 
-        ctx.drawImage(this.spritesheet,
-            this.xStart, this.yStart + frame * (this.height + this.framePadding), //source from sheet
-            this.width, this.height,
-            x, y,
-            this.width * scale,
-            this.height * scale);
+        if (x >= 121*PARAMS.SCALE) {
+            ctx.drawImage(this.spritesheet,
+                30, 149, //source from sheet
+                this.width, this.height,
+                x, y,
+                this.width * scale,
+                this.height * scale);
+        } else {
+            ctx.drawImage(this.spritesheet,
+                this.xStart, this.yStart + frame * (this.height + this.framePadding), //source from sheet
+                this.width, this.height,
+                x, y,
+                this.width * scale,
+                this.height * scale);
+        }
     };
 
     currentFrame() {
